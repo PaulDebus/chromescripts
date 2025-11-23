@@ -40,6 +40,24 @@ SPDX-License-Identifier: CC0-1.0
 - Filter scripts by enabled status
 - Persistent storage with Chrome Sync
 
+## ⚠️ Security Warning
+
+**IMPORTANT: Running arbitrary code can be dangerous!**
+
+Chrome Scripts executes JavaScript code directly on webpages, which means:
+
+- **Scripts have full access** to the page content, including sensitive data like passwords, cookies, and personal information
+- **Malicious code can steal data**, modify content, or perform actions on your behalf
+- **There is no sandboxing** - scripts run with the same permissions as the webpage itself
+
+**Only use scripts that you understand and trust.** Never run code from untrusted sources without carefully reviewing it first. If you don't understand what a script does, don't run it.
+
+> 🛡️ **Best Practices**: 
+> - Review all scripts before adding them
+> - Test scripts on non-sensitive pages first
+> - Keep your scripts simple and readable
+> - Regularly audit your saved scripts
+
 ## 🎬 Quick Start
 
 ### Installation
