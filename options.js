@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Paul Debus
+//
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { CodeJar } from './vendor/codejar.js';
 
 let scripts = [];

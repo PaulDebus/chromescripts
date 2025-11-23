@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Paul Debus
+//
+// SPDX-License-Identifier: GPL-3.0-only
+
 javascript:(function() {
     /* --- CONFIGURATION: YOUR TOOLS --- */
     const tools = [

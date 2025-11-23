@@ -1,0 +1,30 @@
+version = 1
+SPDX-PackageName = "bookmarkmanager"
+SPDX-PackageSupplier = "Paul Debus"
+SPDX-PackageDownloadLocation = "https://github.com/paul/bookmarkmanager"
+
+[[annotations]]
+path = "vendor/codejar.js"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Anton Medvedev"
+SPDX-License-Identifier = "MIT"
+SPDX-FileComment = "CodeJar - https://github.com/antonmedv/codejar"
+
+[[annotations]]
+path = ["vendor/prism.js", "vendor/prism.css"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Lea Verou"
+SPDX-License-Identifier = "MIT"
+SPDX-FileComment = "Prism - https://prismjs.com/"
+
+[[annotations]]
+path = "package-lock.json"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Paul Debus"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ".github/workflows/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Paul Debus"
+SPDX-License-Identifier = "CC0-1.0"

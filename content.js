@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Paul Debus
+//
+// SPDX-License-Identifier: GPL-3.0-only
+
 (function () {
     /* --- UI LOGIC --- */
     const id = 'my-cmd-palette';

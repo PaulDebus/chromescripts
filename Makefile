@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 Paul Debus
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
 minify:
 	@echo "Minifying manager.js..."
 	@# Create a temporary file without the javascript: prefix

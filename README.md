@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2025 Paul Debus
+
+SPDX-License-Identifier: CC0-1.0
+-->
+
 # 🚀 Bookmark Manager
 
 > A powerful Chrome Extension that brings VS Code's command palette to every webpage. Execute custom JavaScript snippets with lightning-fast keyboard shortcuts.
@@ -185,12 +191,36 @@ Users can then download the zip file from the Releases page and load it directly
 
 Built on a Sunday to demonstrate the power of AI-assisted development—from a simple bookmarklet concept to a full-featured Chrome Extension with admin interface, syntax highlighting, and live updates. All through natural language prompts.
 
-## 📝 License
+## 📄 License & Attribution
 
-MIT License - feel free to use and modify!
+### Project License
+This project is licensed under the **MIT License** - feel free to use, modify, and distribute!
+
+### Third-Party Libraries
+
+This project uses the following open-source libraries:
+
+#### [CodeJar](https://github.com/antonmedv/codejar) - MIT License
+- **Version**: 4.3.0
+- **Author**: Anton Medvedev
+- **Purpose**: Lightweight code editor for syntax highlighting
+- **License**: [MIT](https://github.com/antonmedv/codejar/blob/master/LICENSE)
+
+#### [PrismJS](https://github.com/PrismJS/prism) - MIT License
+- **Version**: 1.30.0
+- **Purpose**: Syntax highlighting engine
+- **License**: [MIT](https://github.com/PrismJS/prism/blob/master/LICENSE)
+
+#### [UglifyJS](https://github.com/mishoo/UglifyJS) - BSD-2-Clause License
+- **Version**: 3.19.3
+- **Purpose**: JavaScript minification (dev dependency)
+- **License**: [BSD-2-Clause](https://github.com/mishoo/UglifyJS/blob/master/LICENSE)
+
+All third-party licenses are compatible with this project's MIT license and allow free use, modification, and distribution.
 
 ## 🙏 Acknowledgments
 
-- **CodeJar** - Lightweight code editor
-- **PrismJS** - Syntax highlighting
-- **Gemini 3 Pro** - AI pair programming partner
+- **Anton Medvedev** - Creator of CodeJar
+- **Lea Verou & PrismJS Contributors** - Syntax highlighting
+- **Google Gemini 3 Pro** - AI pair programming partner
+- **Antigravity** - AI development platform

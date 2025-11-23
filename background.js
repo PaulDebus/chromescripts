@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 Paul Debus
+//
+// SPDX-License-Identifier: GPL-3.0-only
+
 chrome.action.onClicked.addListener((tab) => {
     chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' }).catch(() => {
         chrome.scripting.executeScript({
