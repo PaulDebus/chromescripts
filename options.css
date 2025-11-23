@@ -160,17 +160,17 @@ body {
     gap: 10px;
 }
 
-#script-code {
+.editor {
     flex: 1;
     background-color: #1e1e1e;
     color: #d4d4d4;
-    border: none;
-    padding: 20px;
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 14px;
-    resize: none;
-    outline: none;
     line-height: 1.5;
+    padding: 20px;
+    outline: none;
+    min-height: 100%;
+    box-sizing: border-box;
 }
 
 .btn {

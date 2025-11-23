@@ -4,6 +4,7 @@
 <head>
     <title>Bookmark Manager Options</title>
     <link rel="stylesheet" href="options.css">
+    <link rel="stylesheet" href="vendor/prism.css">
 </head>
 
 <body>
@@ -18,6 +19,9 @@
             </ul>
         </div>
         <div class="main-content">
+            <div id="empty-state">
+                <p>Select a script to edit or create a new one.</p>
+            </div>
             <div id="editor-container" class="hidden">
                 <div class="editor-header">
                     <input type="text" id="script-name" placeholder="Script Name">
@@ -28,18 +32,18 @@
                             <input type="checkbox" id="script-enabled">
                             <span class="slider round"></span>
                         </label>
-                        <button id="delete-btn" class="btn danger">Delete</button>
                         <button id="save-btn" class="btn primary">Save</button>
+                        <button id="delete-btn" class="btn danger">Delete</button>
                     </div>
                 </div>
-                <textarea id="script-code" placeholder="// Write your JavaScript code here..."></textarea>
-            </div>
-            <div id="empty-state">
-                <p>Select a script to edit or create a new one.</p>
+                <div class="editor-wrapper" style="flex: 1; position: relative; overflow: hidden;">
+                    <div id="editor" class="editor language-javascript"></div>
+                </div>
             </div>
         </div>
     </div>
-    <script src="options.js"></script>
+    <script src="vendor/prism.js"></script>
+    <script type="module" src="options.js"></script>
 </body>
 
 </html>

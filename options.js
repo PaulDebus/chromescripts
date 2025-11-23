@@ -1,16 +1,30 @@
+import { CodeJar } from './vendor/codejar.js';
+
 let scripts = [];
 let currentScriptId = null;
+let jar;
 
 const scriptList = document.getElementById('script-list');
 const editorContainer = document.getElementById('editor-container');
 const emptyState = document.getElementById('empty-state');
 const nameInput = document.getElementById('script-name');
 const shortcutInput = document.getElementById('script-shortcut');
-const codeInput = document.getElementById('script-code');
 const enabledInput = document.getElementById('script-enabled');
 const saveBtn = document.getElementById('save-btn');
 const deleteBtn = document.getElementById('delete-btn');
 const addBtn = document.getElementById('add-btn');
+
+// Initialize CodeJar
+const editorElement = document.getElementById('editor');
+const highlight = editor => {
+    // Prism.highlightElement(editor); // This might not work if Prism isn't global or if we need to call it differently
+    // Prism is loaded via script tag, so global Prism should be available
+    if (window.Prism) {
+        window.Prism.highlightElement(editor);
+    }
+};
+
+jar = CodeJar(editorElement, highlight);
 
 // Load scripts on startup
 chrome.storage.sync.get(['tools'], (result) => {
@@ -86,7 +100,7 @@ function selectScript(id) {
     if (script) {
         nameInput.value = script.name;
         shortcutInput.value = script.shortcut || '';
-        codeInput.value = script.code;
+        jar.updateCode(script.code);
         enabledInput.checked = script.enabled;
 
         editorContainer.classList.remove('hidden');
@@ -102,7 +116,7 @@ function saveScript() {
     if (scriptIndex !== -1) {
         scripts[scriptIndex].name = nameInput.value;
         scripts[scriptIndex].shortcut = shortcutInput.value.toLowerCase();
-        scripts[scriptIndex].code = codeInput.value;
+        scripts[scriptIndex].code = jar.toString();
         scripts[scriptIndex].enabled = enabledInput.checked;
 
         chrome.storage.sync.set({ tools: scripts }, () => {
