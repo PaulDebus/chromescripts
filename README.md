@@ -48,7 +48,7 @@
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/bookmarkmanager.git
+   git clone https://github.com/PaulDebus/chromescripts.git
    ```
 
 2. Load in Chrome:
