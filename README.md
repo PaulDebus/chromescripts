@@ -49,10 +49,14 @@ SPDX-License-Identifier: CC0-1.0
 1. Go to the [Releases page](../../releases)
 2. Download the latest `chrome-scripts-vX.X.X.zip` file
 3. Extract the zip file to a folder
-4. Open Chrome and navigate to `chrome://extensions`
-5. Enable **Developer mode** (top right corner)
-6. Click **Load unpacked**
-7. Select the extracted folder
+4. **Enable User Scripts API:**
+   - Open Chrome and navigate to `chrome://flags/#userscripts-api`
+   - Set **"Experimental UserScripts API"** to **Enabled**
+   - Click **Relaunch** to restart Chrome
+5. Open Chrome and navigate to `chrome://extensions`
+6. Enable **Developer mode** (top right corner)
+7. Click **Load unpacked**
+8. Select the extracted folder
 
 **Option 2: Clone from Source**
 
@@ -61,13 +65,18 @@ SPDX-License-Identifier: CC0-1.0
    git clone https://github.com/PaulDebus/chromescripts.git
    ```
 
-2. Load in Chrome:
+2. **Enable User Scripts API:**
+   - Open Chrome and navigate to `chrome://flags/#userscripts-api`
+   - Set **"Experimental UserScripts API"** to **Enabled**
+   - Click **Relaunch** to restart Chrome
+
+3. Load in Chrome:
    - Navigate to `chrome://extensions`
    - Enable **Developer mode**
    - Click **Load unpacked**
    - Select the `bookmarkmanager` folder
 
-3. Start using:
+4. Start using:
    - Press `Ctrl+Shift+K` (or `Cmd+Shift+K` on Mac)
    - Try the default scripts or create your own!
 

@@ -52,10 +52,14 @@ jobs:
             
             1. Download `chrome-scripts-${{ github.ref_name }}.zip`
             2. Extract the zip file
-            3. Open Chrome and go to `chrome://extensions`
-            4. Enable **Developer mode**
-            5. Click **Load unpacked**
-            6. Select the extracted folder
+            3. **Enable User Scripts API:**
+               - Open Chrome and navigate to `chrome://flags/#userscripts-api`
+               - Set **"Experimental UserScripts API"** to **Enabled**
+               - Click **Relaunch** to restart Chrome
+            4. Open Chrome and go to `chrome://extensions`
+            5. Enable **Developer mode**
+            6. Click **Load unpacked**
+            7. Select the extracted folder
             
             ## What's New
             
