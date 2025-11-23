@@ -1,0 +1,15 @@
+{
+  "name": "bookmarkmanager",
+  "version": "1.0.0",
+  "description": "A browser bookmarklet that creates a VS Code-style command palette overlay on any webpage. Search and execute custom tools with keyboard navigation.",
+  "main": "manager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "uglify-js": "^3.19.3"
+  }
+}
