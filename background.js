@@ -45,3 +45,21 @@ chrome.runtime.onInstalled.addListener(() => {
         }
     });
 });
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'executeScript' && request.code) {
+        chrome.scripting.executeScript({
+            target: { tabId: sender.tab.id },
+            world: 'MAIN',
+            func: (code) => {
+                try {
+                    const func = new Function(code);
+                    func();
+                } catch (e) {
+                    alert("Error executing script: " + e);
+                }
+            },
+            args: [request.code]
+        });
+    }
+});

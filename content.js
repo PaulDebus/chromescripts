@@ -37,13 +37,12 @@
             tools = result.tools.filter(t => t.enabled).map(t => ({
                 name: t.name,
                 run: function () {
-                    try {
-                        // Execute the stored code
-                        const func = new Function(t.code);
-                        func();
-                    } catch (e) {
-                        alert("Error executing script: " + e);
-                    }
+                    // Send to background script to execute in Main World
+                    // This bypasses Extension CSP entirely
+                    chrome.runtime.sendMessage({
+                        action: 'executeScript',
+                        code: t.code
+                    });
                 }
             }));
             filteredTools = [...tools];
