@@ -1,6 +1,6 @@
 {
-  "name": "bookmarkmanager",
-  "version": "1.0.0",
+  "name": "chrome-scripts",
+  "version": "0.0.3",
   "description": "A Chrome Extension that creates a VS Code-style command palette overlay on any webpage. Search and execute custom JavaScript tools with keyboard navigation.",
   "main": "background.js",
   "scripts": {

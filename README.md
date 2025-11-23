@@ -4,9 +4,11 @@ SPDX-FileCopyrightText: 2025 Paul Debus
 SPDX-License-Identifier: CC0-1.0
 -->
 
-# 🚀 Bookmark Manager
+# Chrome Scripts
 
-> A powerful Chrome Extension that brings VS Code's command palette to every webpage. Execute custom JavaScript snippets with lightning-fast keyboard shortcuts.
+**Tired of repetitive browser tasks?** Run custom JavaScript on any webpage with a VS Code-style command palette.
+
+> A Chrome Extension that brings VS Code's command palette to every webpage. Execute custom JavaScript snippets with keyboard shortcuts.
 
 ![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?style=flat&logo=googlechrome&logoColor=white)
 ![Manifest V3](https://img.shields.io/badge/Manifest-V3-green)
@@ -181,13 +183,6 @@ This project uses GitHub Actions to automatically build release packages.
 
 Users can then download the zip file from the Releases page and load it directly into Chrome.
 
-## 🤖 Generated with AI
-
-> [!NOTE]
-> This entire project was generated using **Gemini 3 Pro** with **Antigravity**.
-
-Built on a Sunday to demonstrate the power of AI-assisted development—from a simple bookmarklet concept to a full-featured Chrome Extension with admin interface, syntax highlighting, and live updates. All through natural language prompts.
-
 ## 📄 License
 
 **GPL-3.0-only** - Because good things should stay free. 😏
@@ -200,5 +195,7 @@ Fork it, hack it, share it—just keep it open source. See [LICENSES/GPL-3.0-onl
 
 - **Anton Medvedev** - Creator of CodeJar
 - **Lea Verou & PrismJS Contributors** - Syntax highlighting
-- **Google Gemini 3 Pro** - AI pair programming partner
-- **Antigravity** - AI development platform
+
+---
+
+<sub>Built with assistance from Gemini 3 Pro and Antigravity.</sub>
