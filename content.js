@@ -33,23 +33,32 @@
     document.body.appendChild(overlay);
 
     /* Initialize Tools from Storage */
-    chrome.storage.sync.get(['tools'], (result) => {
-        if (result.tools) {
-            tools = result.tools.filter(t => t.enabled).map(t => ({
-                name: t.name,
-                shortcut: t.shortcut,
-                code: t.code,
-                run: function () {
-                    // Send to background script to execute in Main World
-                    // This bypasses Extension CSP entirely
-                    chrome.runtime.sendMessage({
-                        action: 'executeScript',
-                        code: t.code
-                    });
-                }
-            }));
-            filteredTools = [...tools];
-            renderList();
+    function loadTools() {
+        chrome.storage.sync.get(['tools'], (result) => {
+            if (result.tools) {
+                tools = result.tools.filter(t => t.enabled).map(t => ({
+                    name: t.name,
+                    shortcut: t.shortcut,
+                    code: t.code,
+                    run: function () {
+                        chrome.runtime.sendMessage({
+                            action: 'executeScript',
+                            code: t.code
+                        });
+                    }
+                }));
+                filteredTools = [...tools];
+                renderList();
+            }
+        });
+    }
+
+    loadTools();
+
+    // Listen for storage changes to update tools in real-time
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (namespace === 'sync' && changes.tools) {
+            loadTools();
         }
     });
 
