@@ -1,50 +1,27 @@
-(function() {
-    /* --- CONFIGURATION: YOUR TOOLS --- */
-    const tools = [
-        {
-            name: "Highlight Images",
-            run: function() { document.querySelectorAll('img').forEach(img => img.style.border = "5px solid red"); }
-        },
-        {
-            name: "Show Page Title",
-            run: function() { alert("Title: " + document.title); }
-        },
-        {
-            name: "Edit Page Content",
-            run: function() { document.body.contentEditable = 'true'; document.designMode = 'on'; }
-        },
-        {
-            name: "Scroll to Top",
-            run: function() { window.scrollTo(0,0); }
-        },
-        {
-            name: "Scroll to Bottom",
-            run: function() { window.scrollTo(0, document.body.scrollHeight); }
-        }
-    ];
-
+(function () {
     /* --- UI LOGIC --- */
     const id = 'my-cmd-palette';
     if (document.getElementById(id)) { document.getElementById(id).remove(); return; }
 
-    let filteredTools = [...tools];
+    let tools = [];
+    let filteredTools = [];
     let selectedIndex = 0;
 
     /* Create Overlay */
     const overlay = document.createElement('div');
     overlay.id = id;
     overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.3); z-index: 2147483647; display: flex; justify-content: center; align-items: flex-start; padding-top: 10vh; font-family: sans-serif;';
-    
+
     /* Create Main Box */
     const box = document.createElement('div');
     box.style.cssText = 'width: 500px; max-width: 90%; background: #1e1e1e; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #333;';
-    
+
     /* Search Input */
     const input = document.createElement('input');
     input.type = 'text';
     input.placeholder = 'Type to search commands...';
     input.style.cssText = 'width: 100%; padding: 15px; font-size: 18px; background: #252526; color: #ddd; border: none; border-bottom: 1px solid #333; outline: none; box-sizing: border-box;';
-    
+
     /* Results List */
     const list = document.createElement('ul');
     list.style.cssText = 'list-style: none; margin: 0; padding: 0; max-height: 300px; overflow-y: auto;';
@@ -54,10 +31,30 @@
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 
-    /* Render Function (FIXED: Uses replaceChildren instead of innerHTML) */
+    /* Initialize Tools from Storage */
+    chrome.storage.sync.get(['tools'], (result) => {
+        if (result.tools) {
+            tools = result.tools.filter(t => t.enabled).map(t => ({
+                name: t.name,
+                run: function () {
+                    try {
+                        // Execute the stored code
+                        const func = new Function(t.code);
+                        func();
+                    } catch (e) {
+                        alert("Error executing script: " + e);
+                    }
+                }
+            }));
+            filteredTools = [...tools];
+            renderList();
+        }
+    });
+
+    /* Render Function */
     function renderList() {
         // Clear list safely
-        list.replaceChildren(); 
+        list.replaceChildren();
 
         if (filteredTools.length === 0) {
             const empty = document.createElement('div');
@@ -70,7 +67,7 @@
         filteredTools.forEach((tool, index) => {
             const li = document.createElement('li');
             li.innerText = tool.name;
-            
+
             const isSelected = (index === selectedIndex);
             li.style.cssText = `
                 padding: 10px 15px; 
@@ -80,10 +77,10 @@
                 color: ${isSelected ? '#fff' : '#ccc'}; 
                 font-size: 14px;
             `;
-            
-            li.onmouseover = function() { selectedIndex = index; renderList(); };
-            li.onclick = function() { execute(tool); };
-            
+
+            li.onmouseover = function () { selectedIndex = index; renderList(); };
+            li.onclick = function () { execute(tool); };
+
             list.appendChild(li);
         });
 
@@ -94,7 +91,7 @@
     }
 
     function execute(tool) {
-        try { tool.run(); } catch(e) { alert("Error: " + e); }
+        try { tool.run(); } catch (e) { alert("Error: " + e); }
         closeMenu();
     }
 
@@ -107,20 +104,20 @@
     box.onclick = (e) => e.stopPropagation();
     overlay.onclick = () => closeMenu();
 
-    input.oninput = function(e) {
+    input.oninput = function (e) {
         const term = e.target.value.toLowerCase();
         const terms = term.split(' ').filter(t => t.length > 0);
-        
+
         filteredTools = tools.filter(tool => {
             const nameLower = tool.name.toLowerCase();
             return terms.every(t => nameLower.includes(t));
         });
-        
+
         selectedIndex = 0;
         renderList();
     };
 
-    input.onkeydown = function(e) {
+    input.onkeydown = function (e) {
         if (e.key === 'ArrowDown') {
             e.preventDefault();
             selectedIndex = (selectedIndex + 1) % filteredTools.length;
@@ -136,6 +133,4 @@
             closeMenu();
         }
     };
-
-    renderList();
 })();

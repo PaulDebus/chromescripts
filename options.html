@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookmark Manager Options</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Scripts</h2>
+                <button id="add-btn" class="btn primary">+ Add</button>
+            </div>
+            <ul id="script-list">
+                <!-- Scripts will be loaded here -->
+            </ul>
+        </div>
+        <div class="main-content">
+            <div id="editor-container" class="hidden">
+                <div class="editor-header">
+                    <input type="text" id="script-name" placeholder="Script Name">
+                    <div class="actions">
+                        <label class="switch">
+                            <input type="checkbox" id="script-enabled">
+                            <span class="slider round"></span>
+                        </label>
+                        <button id="delete-btn" class="btn danger">Delete</button>
+                        <button id="save-btn" class="btn primary">Save</button>
+                    </div>
+                </div>
+                <textarea id="script-code" placeholder="// Write your JavaScript code here..."></textarea>
+            </div>
+            <div id="empty-state">
+                <p>Select a script to edit or create a new one.</p>
+            </div>
+        </div>
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>

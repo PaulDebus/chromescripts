@@ -1,25 +1,30 @@
 {
-  "manifest_version": 3,
-  "name": "Bookmark Manager",
-  "version": "1.0",
-  "description": "A command palette for your browser.",
-  "permissions": [
-    "activeTab",
-    "scripting"
-  ],
-  "background": {
-    "service_worker": "background.js"
-  },
-  "action": {
-    "default_title": "Open Command Palette"
-  },
-  "commands": {
-    "_execute_action": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+K",
-        "mac": "Command+Shift+K"
-      },
-      "description": "Open Command Palette"
+    "manifest_version": 3,
+    "name": "Bookmark Manager",
+    "version": "1.0",
+    "description": "A command palette for your browser.",
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "storage"
+    ],
+    "options_ui": {
+        "page": "options.html",
+        "open_in_tab": true
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_title": "Open Command Palette"
+    },
+    "commands": {
+        "_execute_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+K",
+                "mac": "Command+Shift+K"
+            },
+            "description": "Open Command Palette"
+        }
     }
-  }
 }
