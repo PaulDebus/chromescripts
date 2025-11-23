@@ -116,10 +116,24 @@ function selectScript(id) {
 function saveScript() {
     if (!currentScriptId) return;
 
+    const shortcutValue = shortcutInput.value.trim().toLowerCase();
+
+    // Validation: Only allow single alphanumeric characters
+    if (shortcutValue.length > 0) {
+        if (shortcutValue.length > 1) {
+            alert("Shortcut must be a single character.");
+            return;
+        }
+        if (!/^[\p{L}\p{N}]$/u.test(shortcutValue)) {
+            alert("Shortcut must be a letter or number.");
+            return;
+        }
+    }
+
     const scriptIndex = scripts.findIndex(s => s.id === currentScriptId);
     if (scriptIndex !== -1) {
         scripts[scriptIndex].name = nameInput.value;
-        scripts[scriptIndex].shortcut = shortcutInput.value.toLowerCase();
+        scripts[scriptIndex].shortcut = shortcutValue;
         scripts[scriptIndex].code = jar.toString();
         scripts[scriptIndex].enabled = enabledInput.checked;
 

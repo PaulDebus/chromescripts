@@ -66,13 +66,17 @@ const defaultTools = [
 async function registerScripts() {
     try {
         await chrome.userScripts.unregister();
-    } catch (e) {}
+    } catch (e) {
+        console.debug('userScripts.unregister:', e.message);
+    }
 
     try {
         await chrome.userScripts.configureWorld({
             csp: "script-src 'self' 'unsafe-eval' 'unsafe-inline'"
         });
-    } catch (e) {}
+    } catch (e) {
+        console.warn('userScripts.configureWorld failed:', e.message);
+    }
 
     try {
         await chrome.userScripts.register([{
@@ -81,7 +85,9 @@ async function registerScripts() {
             world: 'USER_SCRIPT',
             matches: ['<all_urls>']
         }]);
-    } catch (e) {}
+    } catch (e) {
+        console.warn('userScripts.register failed:', e.message);
+    }
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
