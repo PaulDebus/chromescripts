@@ -1,75 +1,164 @@
-# Bookmark Manager
+# 🚀 Bookmark Manager
 
-A browser tool that creates a VS Code-style command palette overlay on any webpage. Search and execute custom tools with keyboard navigation.
+> A powerful Chrome Extension that brings VS Code's command palette to every webpage. Execute custom JavaScript snippets with lightning-fast keyboard shortcuts.
 
-Available as a **Chrome Extension** (recommended) or a **Bookmarklet** (legacy).
+![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?style=flat&logo=googlechrome&logoColor=white)
+![Manifest V3](https://img.shields.io/badge/Manifest-V3-green)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?logo=javascript)
 
-## Features
+## ✨ Features
 
-- Fuzzy search with multi-word support
-- Keyboard navigation (Arrow keys, Enter, Escape)
-- Click outside to dismiss
-- Dark theme UI
-- **Extension Shortcut**: `Ctrl+Shift+K` (Windows/Linux) or `Cmd+Shift+K` (Mac)
+### 🎯 Dual-Mode Interface
+- **Search Mode** (`Ctrl+Shift+K`): Fuzzy search through all your scripts
+- **Leader Mode** (`Ctrl+Shift+L`): Vim-style single-key execution for power users
 
-## Customizing Shortcuts
+### ⚡ Smart Script Management
+- **Live Updates**: Changes in the admin panel instantly reflect in all open palettes
+- **Syntax Highlighting**: Full JavaScript highlighting with CodeJar + PrismJS
+- **Drag-Free Reordering**: Simple up/down buttons to organize your scripts
+- **Auto-Save Toggles**: Enable/disable scripts without clicking save
 
-You can change the default keyboard shortcuts at any time:
+### 🎨 Beautiful UI
+- Dark theme optimized for readability
+- Keyboard-first navigation (arrows, enter, escape)
+- Shortcut badges displayed as button-like indicators
+- Click-outside-to-dismiss overlay
 
-1.  Open Chrome and navigate to `chrome://extensions/shortcuts`.
-2.  Find "Bookmark Manager" in the list.
-3.  Click the pencil icon or the input field next to the command you want to change.
-4.  Press your desired key combination.
+### 🔧 Developer-Friendly
+- Execute scripts in the page's Main World (bypasses extension CSP)
+- Assign single-key shortcuts to frequently-used scripts
+- Filter scripts by enabled status
+- Persistent storage with Chrome Sync
 
-## Chrome Extension
+## 🎬 Quick Start
 
 ### Installation
 
-1. Clone or download this repository.
-2. Open Chrome and navigate to `chrome://extensions`.
-3. Enable **Developer mode** in the top right corner.
-4. Click **Load unpacked**.
-5. Select the repository folder (containing `manifest.json`).
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/bookmarkmanager.git
+   ```
 
-### Development
+2. Load in Chrome:
+   - Navigate to `chrome://extensions`
+   - Enable **Developer mode**
+   - Click **Load unpacked**
+   - Select the `bookmarkmanager` folder
 
-- **Files**:
-    - `manifest.json`: Extension configuration.
-    - `background.js`: Service worker for handling shortcuts.
-    - `content.js`: The main logic injected into pages.
-- **Reloading**: After making changes to `content.js` or `background.js`, go to `chrome://extensions` and click the refresh icon on the Bookmark Manager card. You may also need to refresh the web page you are testing on.
+3. Start using:
+   - Press `Ctrl+Shift+K` (or `Cmd+Shift+K` on Mac)
+   - Try the default scripts or create your own!
+
+### Creating Your First Script
+
+1. Right-click the extension icon → **Options**
+2. Click **+ Add** to create a new script
+3. Give it a name and optional shortcut key
+4. Write your JavaScript in the highlighted editor
+5. Toggle it on and press **Save**
+
+**Example Script:**
+```javascript
+// Highlight all links on the page
+document.querySelectorAll('a').forEach(link => {
+    link.style.backgroundColor = 'yellow';
+});
+```
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+Shift+K` / `Cmd+Shift+K` | Open Search Mode |
+| `Ctrl+Shift+L` / `Cmd+Shift+L` | Open Leader Mode |
+| `↑` / `↓` | Navigate scripts |
+| `Enter` | Execute selected script |
+| `Esc` | Close palette |
+| `[a-z]` | Execute script with matching shortcut (Leader Mode only) |
+
+> 💡 **Tip**: Customize shortcuts at `chrome://extensions/shortcuts`
+
+## 🎨 Admin Interface
+
+Access the full-featured admin panel by right-clicking the extension icon and selecting **Options**.
+
+### Features:
+- ✏️ **Syntax-highlighted editor** for writing JavaScript
+- 🔤 **Single-key shortcuts** for instant execution
+- 🔄 **Reorder scripts** with up/down buttons
+- 🎚️ **Toggle scripts** on/off with auto-save
+- 🗑️ **Delete scripts** with confirmation
+- 📊 **Visual status indicators** (green dot = enabled)
+
+## 🏗️ Architecture
+
+```
+bookmarkmanager/
+├── manifest.json       # Extension configuration
+├── background.js       # Service worker (handles shortcuts & script execution)
+├── content.js          # Command palette UI & storage listener
+├── options.html        # Admin interface structure
+├── options.js          # Admin interface logic
+├── options.css         # Admin interface styling
+└── vendor/             # Third-party libraries
+    ├── codejar.js      # Lightweight code editor
+    ├── prism.js        # Syntax highlighting
+    └── prism.css       # Syntax theme
+```
+
+### How It Works
+
+1. **Keyboard Shortcut** → `background.js` injects `content.js`
+2. **Content Script** → Loads scripts from `chrome.storage.sync`
+3. **User Selection** → Sends script code to `background.js`
+4. **Background Worker** → Executes in Main World via `chrome.scripting.executeScript`
+5. **Storage Changes** → Live updates via `chrome.storage.onChanged` listener
+
+## 🚢 Distribution
+
+### Chrome Web Store
+1. Zip the project (exclude `.git`, `node_modules`)
+2. Register at [Chrome Web Store Developer](https://chrome.google.com/webstore/dev/register) ($5 one-time fee)
+3. Upload and submit for review
+
+### Manual Sharing
+Share the folder directly with users who can load it in Developer Mode.
+
+## 🛠️ Development
+
+### Prerequisites
+- Node.js (for building the minified bookmarklet)
+- Chrome browser
+
+### Build Commands
+```bash
+# Install dependencies
+npm install
+
+# Build minified bookmarklet (legacy)
+make
+```
 
 ### Testing
-
-1. Open any webpage (e.g., google.com).
-2. Press `Ctrl+Shift+K` (or `Cmd+Shift+K`).
-3. Verify the command palette appears.
-4. Run a command like "Highlight Images".
-
-
-
-## Distribution
-
-To share this extension with others, you have two main options:
-
-### 1. Chrome Web Store (Recommended)
-This allows anyone to easily install and update the extension.
-
-1.  **Create a Zip**: Compress the project folder (excluding `.git`, `node_modules`, and other dev files).
-2.  **Developer Account**: Register for a [Chrome Web Store Developer](https://chrome.google.com/webstore/dev/register) account (requires a one-time $5 fee).
-3.  **Upload**: Go to the [Developer Dashboard](https://chrome.google.com/webstore/developer/dashboard), click "New Item", and upload your zip file.
-4.  **Listing Details**: Fill in the store listing information (description, screenshots, icon).
-5.  **Submit**: Submit your item for review. Once approved, it will be public.
-
-### 2. Manual Installation (Developer Mode)
-For internal use or testing without publishing:
-
-1.  **Zip the Folder**: Send the project folder (or a zip of it) to the user.
-2.  **Install**: The user must follow the **Installation** steps above (Enable Developer Mode -> Load Unpacked).
+1. Make changes to source files
+2. Go to `chrome://extensions`
+3. Click refresh icon on the extension card
+4. Reload your test webpage
+5. Test with `Ctrl+Shift+K`
 
 ## 🤖 Generated with AI
 
 > [!NOTE]
-> This project was entirely generated using **Gemini 3 Pro** with **Antigravity**.
+> This entire project was generated using **Gemini 3 Pro** with **Antigravity**.
 
-This project was done on a Sunday to test the power of AI-assisted coding, building out a simple bookmarklet to a full-featured Chrome Extension with a custom Admin Interface, all built through natural language prompts.
+Built on a Sunday to demonstrate the power of AI-assisted development—from a simple bookmarklet concept to a full-featured Chrome Extension with admin interface, syntax highlighting, and live updates. All through natural language prompts.
+
+## 📝 License
+
+MIT License - feel free to use and modify!
+
+## 🙏 Acknowledgments
+
+- **CodeJar** - Lightweight code editor
+- **PrismJS** - Syntax highlighting
+- **Gemini 3 Pro** - AI pair programming partner
