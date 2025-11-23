@@ -8,6 +8,8 @@ SPDX-License-Identifier: CC0-1.0
 
 **Tired of repetitive browser tasks?** Run custom JavaScript on any webpage with a VS Code-style command palette.
 
+**Too many bookmarklets?** Chrome Scripts is a better alternative.
+
 > A Chrome Extension that brings VS Code's command palette to every webpage. Execute custom JavaScript snippets with keyboard shortcuts.
 
 ![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?style=flat&logo=googlechrome&logoColor=white)
