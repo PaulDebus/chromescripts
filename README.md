@@ -145,16 +145,13 @@ Share the folder directly with users who can load it in Developer Mode.
 ## 🛠️ Development
 
 ### Prerequisites
-- Node.js (for building the minified bookmarklet)
+- Node.js (for dependencies)
 - Chrome browser
 
-### Build Commands
+### Setup
 ```bash
 # Install dependencies
 npm install
-
-# Build minified bookmarklet (legacy)
-make
 ```
 
 ### Testing

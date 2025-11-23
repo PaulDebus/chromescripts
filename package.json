@@ -1,8 +1,8 @@
 {
   "name": "bookmarkmanager",
   "version": "1.0.0",
-  "description": "A browser bookmarklet that creates a VS Code-style command palette overlay on any webpage. Search and execute custom tools with keyboard navigation.",
-  "main": "manager.js",
+  "description": "A Chrome Extension that creates a VS Code-style command palette overlay on any webpage. Search and execute custom JavaScript tools with keyboard navigation.",
+  "main": "background.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
