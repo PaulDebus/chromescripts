@@ -188,32 +188,13 @@ Users can then download the zip file from the Releases page and load it directly
 
 Built on a Sunday to demonstrate the power of AI-assisted development—from a simple bookmarklet concept to a full-featured Chrome Extension with admin interface, syntax highlighting, and live updates. All through natural language prompts.
 
-## 📄 License & Attribution
+## 📄 License
 
-### Project License
-This project is licensed under the **MIT License** - feel free to use, modify, and distribute!
+**GPL-3.0-only** - Because good things should stay free. 😏
 
-### Third-Party Libraries
+Fork it, hack it, share it—just keep it open source. See [LICENSES/GPL-3.0-only.txt](LICENSES/GPL-3.0-only.txt) for the legal stuff.
 
-This project uses the following open-source libraries:
-
-#### [CodeJar](https://github.com/antonmedv/codejar) - MIT License
-- **Version**: 4.3.0
-- **Author**: Anton Medvedev
-- **Purpose**: Lightweight code editor for syntax highlighting
-- **License**: [MIT](https://github.com/antonmedv/codejar/blob/master/LICENSE)
-
-#### [PrismJS](https://github.com/PrismJS/prism) - MIT License
-- **Version**: 1.30.0
-- **Purpose**: Syntax highlighting engine
-- **License**: [MIT](https://github.com/PrismJS/prism/blob/master/LICENSE)
-
-#### [UglifyJS](https://github.com/mishoo/UglifyJS) - BSD-2-Clause License
-- **Version**: 3.19.3
-- **Purpose**: JavaScript minification (dev dependency)
-- **License**: [BSD-2-Clause](https://github.com/mishoo/UglifyJS/blob/master/LICENSE)
-
-All third-party licenses are compatible with this project's MIT license and allow free use, modification, and distribution.
+**Third-party bits**: CodeJar (MIT), PrismJS (MIT), UglifyJS (BSD-2-Clause) - all GPL-compatible and lovely.
 
 ## 🙏 Acknowledgments
 
