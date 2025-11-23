@@ -72,6 +72,49 @@ body {
     background-color: #4caf50;
 }
 
+.script-content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.script-controls {
+    display: flex;
+    gap: 2px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+#script-list li:hover .script-controls {
+    opacity: 1;
+}
+
+.move-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 2px 5px;
+    font-size: 10px;
+    border-radius: 3px;
+}
+
+.move-btn:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.move-btn:disabled {
+    color: #444;
+    cursor: default;
+}
+
+.move-btn:disabled:hover {
+    background-color: transparent;
+}
+
 .main-content {
     flex: 1;
     display: flex;
@@ -196,15 +239,15 @@ body {
     transition: .4s;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: #4caf50;
 }
 
-input:focus + .slider {
+input:focus+.slider {
     box-shadow: 0 0 1px #4caf50;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(20px);
 }
 

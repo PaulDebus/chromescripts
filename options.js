@@ -22,19 +22,60 @@ chrome.storage.sync.get(['tools'], (result) => {
 
 function renderList() {
     scriptList.innerHTML = '';
-    scripts.forEach(script => {
+    scripts.forEach((script, index) => {
         const li = document.createElement('li');
         li.className = script.id === currentScriptId ? 'active' : '';
         if (script.enabled) li.classList.add('enabled');
 
         const shortcutDisplay = script.shortcut ? `[${script.shortcut}] ` : '';
 
-        li.innerHTML = `
+        const content = document.createElement('div');
+        content.className = 'script-content';
+        content.innerHTML = `
             <span>${shortcutDisplay}${script.name}</span>
             <span class="status"></span>
         `;
+
+        const controls = document.createElement('div');
+        controls.className = 'script-controls';
+
+        const upBtn = document.createElement('button');
+        upBtn.className = 'move-btn';
+        upBtn.innerHTML = '&#9650;'; // Up arrow
+        upBtn.title = 'Move Up';
+        upBtn.onclick = (e) => { e.stopPropagation(); moveScript(script.id, -1); };
+        if (index === 0) upBtn.disabled = true;
+
+        const downBtn = document.createElement('button');
+        downBtn.className = 'move-btn';
+        downBtn.innerHTML = '&#9660;'; // Down arrow
+        downBtn.title = 'Move Down';
+        downBtn.onclick = (e) => { e.stopPropagation(); moveScript(script.id, 1); };
+        if (index === scripts.length - 1) downBtn.disabled = true;
+
+        controls.appendChild(upBtn);
+        controls.appendChild(downBtn);
+
+        li.appendChild(content);
+        li.appendChild(controls);
+
         li.onclick = () => selectScript(script.id);
         scriptList.appendChild(li);
+    });
+}
+
+function moveScript(id, direction) {
+    const index = scripts.findIndex(s => s.id === id);
+    if (index === -1) return;
+
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= scripts.length) return;
+
+    // Swap
+    [scripts[index], scripts[newIndex]] = [scripts[newIndex], scripts[index]];
+
+    chrome.storage.sync.set({ tools: scripts }, () => {
+        renderList();
     });
 }
 

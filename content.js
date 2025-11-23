@@ -68,10 +68,8 @@
 
         filteredTools.forEach((tool, index) => {
             const li = document.createElement('li');
-            const shortcutDisplay = tool.shortcut ? `[${tool.shortcut}] ` : '';
-            li.innerText = shortcutDisplay + tool.name;
-
             const isSelected = (index === selectedIndex);
+
             li.style.cssText = `
                 padding: 10px 15px; 
                 cursor: pointer; 
@@ -79,7 +77,32 @@
                 background: ${isSelected ? '#094771' : 'transparent'}; 
                 color: ${isSelected ? '#fff' : '#ccc'}; 
                 font-size: 14px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             `;
+
+            const nameSpan = document.createElement('span');
+            nameSpan.innerText = tool.name;
+            li.appendChild(nameSpan);
+
+            if (tool.shortcut) {
+                const shortcutSpan = document.createElement('span');
+                shortcutSpan.innerText = tool.shortcut.toUpperCase();
+                shortcutSpan.style.cssText = `
+                    background-color: ${isSelected ? 'rgba(255,255,255,0.2)' : '#333'};
+                    border: 1px solid ${isSelected ? 'rgba(255,255,255,0.3)' : '#555'};
+                    border-radius: 4px;
+                    padding: 2px 6px;
+                    font-size: 11px;
+                    font-family: monospace;
+                    color: ${isSelected ? '#fff' : '#eee'};
+                    min-width: 12px;
+                    text-align: center;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+                `;
+                li.appendChild(shortcutSpan);
+            }
 
             li.onmouseover = function () { selectedIndex = index; renderList(); };
             li.onclick = function () { execute(tool); };
