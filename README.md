@@ -47,7 +47,7 @@ SPDX-License-Identifier: CC0-1.0
 **Option 1: Download Latest Release (Recommended)**
 
 1. Go to the [Releases page](../../releases)
-2. Download the latest `bookmark-manager-vX.X.X.zip` file
+2. Download the latest `chrome-scripts-vX.X.X.zip` file
 3. Extract the zip file to a folder
 4. Open Chrome and navigate to `chrome://extensions`
 5. Enable **Developer mode** (top right corner)

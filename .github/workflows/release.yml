@@ -32,6 +32,7 @@ jobs:
           cp manifest.json release/
           cp background.js release/
           cp content.js release/
+          cp executor.js release/
           cp options.html release/
           cp options.js release/
           cp options.css release/
@@ -39,17 +40,17 @@ jobs:
           
           # Create zip file
           cd release
-          zip -r ../bookmark-manager-${{ github.ref_name }}.zip .
+          zip -r ../chrome-scripts-${{ github.ref_name }}.zip .
           cd ..
       
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: bookmark-manager-${{ github.ref_name }}.zip
+          files: chrome-scripts-${{ github.ref_name }}.zip
           body: |
             ## Installation
             
-            1. Download `bookmark-manager-${{ github.ref_name }}.zip`
+            1. Download `chrome-scripts-${{ github.ref_name }}.zip`
             2. Extract the zip file
             3. Open Chrome and go to `chrome://extensions`
             4. Enable **Developer mode**
