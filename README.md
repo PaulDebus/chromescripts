@@ -12,6 +12,15 @@ Available as a **Chrome Extension** (recommended) or a **Bookmarklet** (legacy).
 - Dark theme UI
 - **Extension Shortcut**: `Ctrl+Shift+K` (Windows/Linux) or `Cmd+Shift+K` (Mac)
 
+## Customizing Shortcuts
+
+You can change the default keyboard shortcuts at any time:
+
+1.  Open Chrome and navigate to `chrome://extensions/shortcuts`.
+2.  Find "Bookmark Manager" in the list.
+3.  Click the pencil icon or the input field next to the command you want to change.
+4.  Press your desired key combination.
+
 ## Chrome Extension
 
 ### Installation

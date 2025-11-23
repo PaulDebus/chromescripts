@@ -5,6 +5,7 @@ const scriptList = document.getElementById('script-list');
 const editorContainer = document.getElementById('editor-container');
 const emptyState = document.getElementById('empty-state');
 const nameInput = document.getElementById('script-name');
+const shortcutInput = document.getElementById('script-shortcut');
 const codeInput = document.getElementById('script-code');
 const enabledInput = document.getElementById('script-enabled');
 const saveBtn = document.getElementById('save-btn');
@@ -26,8 +27,10 @@ function renderList() {
         li.className = script.id === currentScriptId ? 'active' : '';
         if (script.enabled) li.classList.add('enabled');
 
+        const shortcutDisplay = script.shortcut ? `[${script.shortcut}] ` : '';
+
         li.innerHTML = `
-            <span>${script.name}</span>
+            <span>${shortcutDisplay}${script.name}</span>
             <span class="status"></span>
         `;
         li.onclick = () => selectScript(script.id);
@@ -41,6 +44,7 @@ function selectScript(id) {
 
     if (script) {
         nameInput.value = script.name;
+        shortcutInput.value = script.shortcut || '';
         codeInput.value = script.code;
         enabledInput.checked = script.enabled;
 
@@ -56,6 +60,7 @@ function saveScript() {
     const scriptIndex = scripts.findIndex(s => s.id === currentScriptId);
     if (scriptIndex !== -1) {
         scripts[scriptIndex].name = nameInput.value;
+        scripts[scriptIndex].shortcut = shortcutInput.value.toLowerCase();
         scripts[scriptIndex].code = codeInput.value;
         scripts[scriptIndex].enabled = enabledInput.checked;
 

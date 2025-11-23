@@ -25,6 +25,13 @@
                 "mac": "Command+Shift+K"
             },
             "description": "Open Command Palette"
+        },
+        "toggle-leader": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+L",
+                "mac": "Command+Shift+L"
+            },
+            "description": "Open Leader Mode"
         }
     }
 }

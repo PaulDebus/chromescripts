@@ -1,8 +1,29 @@
 chrome.action.onClicked.addListener((tab) => {
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ['content.js']
+    chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' }).catch(() => {
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ['content.js']
+        }).then(() => {
+            setTimeout(() => {
+                chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' });
+            }, 100);
+        });
     });
+});
+
+chrome.commands.onCommand.addListener((command, tab) => {
+    if (command === 'toggle-leader') {
+        chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'leader' }).catch(() => {
+            chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: ['content.js']
+            }).then(() => {
+                setTimeout(() => {
+                    chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'leader' });
+                }, 100);
+            });
+        });
+    }
 });
 
 const defaultTools = [

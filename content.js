@@ -6,6 +6,7 @@
     let tools = [];
     let filteredTools = [];
     let selectedIndex = 0;
+    let currentMode = 'search'; // 'search' or 'leader'
 
     /* Create Overlay */
     const overlay = document.createElement('div');
@@ -36,6 +37,8 @@
         if (result.tools) {
             tools = result.tools.filter(t => t.enabled).map(t => ({
                 name: t.name,
+                shortcut: t.shortcut,
+                code: t.code,
                 run: function () {
                     // Send to background script to execute in Main World
                     // This bypasses Extension CSP entirely
@@ -65,7 +68,8 @@
 
         filteredTools.forEach((tool, index) => {
             const li = document.createElement('li');
-            li.innerText = tool.name;
+            const shortcutDisplay = tool.shortcut ? `[${tool.shortcut}] ` : '';
+            li.innerText = shortcutDisplay + tool.name;
 
             const isSelected = (index === selectedIndex);
             li.style.cssText = `
@@ -117,6 +121,16 @@
     };
 
     input.onkeydown = function (e) {
+        // Check for shortcut keys first (ONLY in Leader Mode)
+        if (currentMode === 'leader' && e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+            const shortcutTool = tools.find(t => t.shortcut === e.key.toLowerCase());
+            if (shortcutTool) {
+                e.preventDefault();
+                execute(shortcutTool);
+                return;
+            }
+        }
+
         if (e.key === 'ArrowDown') {
             e.preventDefault();
             selectedIndex = (selectedIndex + 1) % filteredTools.length;
@@ -132,4 +146,31 @@
             closeMenu();
         }
     };
+
+    // Handle messages from background script
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === 'open') {
+            // Ensure overlay is in the DOM
+            if (!document.getElementById(id)) {
+                document.body.appendChild(overlay);
+            }
+
+            currentMode = request.mode; // Update current mode
+
+            if (request.mode === 'leader') {
+                input.placeholder = 'Press a key...';
+                box.style.borderColor = '#0e639c'; // Blue border for Leader Mode
+                // Filter to show only tools with shortcuts
+                filteredTools = tools.filter(t => t.shortcut);
+                renderList();
+            } else {
+                input.placeholder = 'Type to search commands...';
+                box.style.borderColor = '#333';
+                filteredTools = [...tools];
+                renderList();
+            }
+            input.focus();
+            input.value = '';
+        }
+    });
 })();

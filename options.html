@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Bookmark Manager Options</title>
     <link rel="stylesheet" href="options.css">
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
@@ -19,6 +21,8 @@
             <div id="editor-container" class="hidden">
                 <div class="editor-header">
                     <input type="text" id="script-name" placeholder="Script Name">
+                    <input type="text" id="script-shortcut" placeholder="Key" maxlength="1"
+                        style="width: 50px; margin-left: 10px; background: transparent; border: 1px solid #333; color: #fff; padding: 5px; text-align: center;">
                     <div class="actions">
                         <label class="switch">
                             <input type="checkbox" id="script-enabled">
@@ -37,4 +41,5 @@
     </div>
     <script src="options.js"></script>
 </body>
+
 </html>
