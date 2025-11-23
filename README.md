@@ -37,29 +37,30 @@ Available as a **Chrome Extension** (recommended) or a **Bookmarklet** (legacy).
 3. Verify the command palette appears.
 4. Run a command like "Highlight Images".
 
-## Bookmarklet (Legacy)
 
-### Building
 
-To generate the minified bookmarklet from `manager.js`:
+## Distribution
 
-1. Ensure you have `npm` installed.
-2. Run `make`.
-3. The output will be in `manager.minified.js`.
+To share this extension with others, you have two main options:
 
-### Installation
+### 1. Chrome Web Store (Recommended)
+This allows anyone to easily install and update the extension.
 
-1. Copy the contents of `manager.minified.js`.
-2. Create a new bookmark in your browser.
-3. Paste the minified code as the URL.
+1.  **Create a Zip**: Compress the project folder (excluding `.git`, `node_modules`, and other dev files).
+2.  **Developer Account**: Register for a [Chrome Web Store Developer](https://chrome.google.com/webstore/dev/register) account (requires a one-time $5 fee).
+3.  **Upload**: Go to the [Developer Dashboard](https://chrome.google.com/webstore/developer/dashboard), click "New Item", and upload your zip file.
+4.  **Listing Details**: Fill in the store listing information (description, screenshots, icon).
+5.  **Submit**: Submit your item for review. Once approved, it will be public.
 
-## Adding Custom Tools
+### 2. Manual Installation (Developer Mode)
+For internal use or testing without publishing:
 
-Edit the `tools` array in `content.js` (for Extension) or `manager.js` (for Bookmarklet):
+1.  **Zip the Folder**: Send the project folder (or a zip of it) to the user.
+2.  **Install**: The user must follow the **Installation** steps above (Enable Developer Mode -> Load Unpacked).
 
-```javascript
-{
-    name: "My Custom Tool",
-    run: function() { /* your code here */ }
-}
-```
+## 🤖 Generated with AI
+
+> [!NOTE]
+> This project was entirely generated using **Gemini 3 Pro** with **Antigravity**.
+
+This project was done on a Sunday to test the power of AI-assisted coding, building out a simple bookmarklet to a full-featured Chrome Extension with a custom Admin Interface, all built through natural language prompts.
