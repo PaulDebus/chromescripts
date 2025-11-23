@@ -264,3 +264,22 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.editor-footer {
+    padding: 10px 15px;
+    background-color: #252526;
+    border-top: 1px solid #333;
+    text-align: center;
+}
+
+.editor-footer a {
+    color: #4daafc;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.editor-footer a:hover {
+    text-decoration: underline;
+    color: #6dbdfc;
+}
