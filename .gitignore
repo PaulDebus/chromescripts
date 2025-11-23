@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+manager.minified.js
+
+# Temporary files
+*.tmp.js
+*.log
+.DS_Store
