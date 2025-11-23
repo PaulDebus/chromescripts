@@ -117,8 +117,17 @@
                 li.appendChild(shortcutSpan);
             }
 
-            li.onmouseover = function () { selectedIndex = index; renderList(); };
-            li.onclick = function () { execute(tool); };
+            li.onmouseover = function () {
+                selectedIndex = index;
+                renderList();
+            };
+
+            li.onmouseup = function (e) {
+                e.stopPropagation();
+                // Refocus input to maintain keyboard navigation
+                setTimeout(() => input.focus(), 0);
+                execute(tool);
+            };
 
             list.appendChild(li);
         });
@@ -130,7 +139,11 @@
     }
 
     function execute(tool) {
-        try { tool.run(); } catch (e) { alert("Error: " + e); }
+        try {
+            tool.run();
+        } catch (e) {
+            alert("Error: " + e);
+        }
         closeMenu();
     }
 
