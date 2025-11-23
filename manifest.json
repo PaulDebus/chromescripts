@@ -6,7 +6,11 @@
     "permissions": [
         "activeTab",
         "scripting",
-        "storage"
+        "storage",
+        "userScripts"
+    ],
+    "host_permissions": [
+        "<all_urls>"
     ],
     "options_ui": {
         "page": "options.html",

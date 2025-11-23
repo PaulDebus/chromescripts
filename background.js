@@ -63,13 +63,37 @@ const defaultTools = [
     }
 ];
 
-chrome.runtime.onInstalled.addListener(() => {
+async function registerScripts() {
+    try {
+        await chrome.userScripts.unregister();
+    } catch (e) {}
+
+    try {
+        await chrome.userScripts.configureWorld({
+            csp: "script-src 'self' 'unsafe-eval' 'unsafe-inline'"
+        });
+    } catch (e) {}
+
+    try {
+        await chrome.userScripts.register([{
+            id: 'executor',
+            js: [{ file: 'executor.js' }],
+            world: 'USER_SCRIPT',
+            matches: ['<all_urls>']
+        }]);
+    } catch (e) {}
+}
+
+chrome.runtime.onInstalled.addListener(async () => {
     chrome.storage.sync.get(['tools'], (result) => {
         if (!result.tools) {
             chrome.storage.sync.set({ tools: defaultTools });
         }
     });
+    await registerScripts();
 });
+
+chrome.runtime.onStartup.addListener(registerScripts);
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'executeScript' && request.code) {
@@ -77,12 +101,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             target: { tabId: sender.tab.id },
             world: 'MAIN',
             func: (code) => {
-                try {
-                    const func = new Function(code);
-                    func();
-                } catch (e) {
-                    alert("Error executing script: " + e);
-                }
+                document.dispatchEvent(new CustomEvent('antigravity-execute', { detail: code }));
             },
             args: [request.code]
         });
