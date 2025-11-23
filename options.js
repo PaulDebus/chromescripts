@@ -160,3 +160,10 @@ function addScript() {
 saveBtn.onclick = saveScript;
 deleteBtn.onclick = deleteScript;
 addBtn.onclick = addScript;
+
+// Auto-save when toggling enabled/disabled
+enabledInput.onchange = function () {
+    if (currentScriptId) {
+        saveScript();
+    }
+};
