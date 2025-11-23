@@ -34,6 +34,18 @@
 
 ### Installation
 
+**Option 1: Download Latest Release (Recommended)**
+
+1. Go to the [Releases page](../../releases)
+2. Download the latest `bookmark-manager-vX.X.X.zip` file
+3. Extract the zip file to a folder
+4. Open Chrome and navigate to `chrome://extensions`
+5. Enable **Developer mode** (top right corner)
+6. Click **Load unpacked**
+7. Select the extracted folder
+
+**Option 2: Clone from Source**
+
 1. Clone this repository:
    ```bash
    git clone https://github.com/yourusername/bookmarkmanager.git
@@ -145,6 +157,26 @@ make
 3. Click refresh icon on the extension card
 4. Reload your test webpage
 5. Test with `Ctrl+Shift+K`
+
+### Creating Releases
+
+This project uses GitHub Actions to automatically build release packages.
+
+**To create a new release:**
+
+1. Update version in `manifest.json`
+2. Commit your changes
+3. Create and push a tag:
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+4. GitHub Actions will automatically:
+   - Build the extension package
+   - Create a GitHub release
+   - Attach the zip file for download
+
+Users can then download the zip file from the Releases page and load it directly into Chrome.
 
 ## 🤖 Generated with AI
 

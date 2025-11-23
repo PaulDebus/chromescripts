@@ -1,0 +1,61 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Create release package
+        run: |
+          # Create a clean directory for the extension
+          mkdir -p release
+          
+          # Copy extension files (exclude dev files)
+          cp manifest.json release/
+          cp background.js release/
+          cp content.js release/
+          cp options.html release/
+          cp options.js release/
+          cp options.css release/
+          cp -r vendor release/
+          
+          # Create zip file
+          cd release
+          zip -r ../bookmark-manager-${{ github.ref_name }}.zip .
+          cd ..
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: bookmark-manager-${{ github.ref_name }}.zip
+          body: |
+            ## Installation
+            
+            1. Download `bookmark-manager-${{ github.ref_name }}.zip`
+            2. Extract the zip file
+            3. Open Chrome and go to `chrome://extensions`
+            4. Enable **Developer mode**
+            5. Click **Load unpacked**
+            6. Select the extracted folder
+            
+            ## What's New
+            
+            See the commit history for details on changes in this release.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
