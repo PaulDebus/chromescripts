@@ -9,9 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "uglify-js": "^3.19.3"
-  },
+  "devDependencies": {},
   "dependencies": {
     "codejar": "^4.3.0",
     "prismjs": "^1.30.0"

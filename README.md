@@ -194,7 +194,7 @@ Built on a Sunday to demonstrate the power of AI-assisted development—from a s
 
 Fork it, hack it, share it—just keep it open source. See [LICENSES/GPL-3.0-only.txt](LICENSES/GPL-3.0-only.txt) for the legal stuff.
 
-**Third-party bits**: CodeJar (MIT), PrismJS (MIT), UglifyJS (BSD-2-Clause) - all GPL-compatible and lovely.
+**Third-party bits**: CodeJar (MIT), PrismJS (MIT) - all GPL-compatible and lovely.
 
 ## 🙏 Acknowledgments
 
