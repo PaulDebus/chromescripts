@@ -27,11 +27,13 @@ SPDX-License-Identifier: CC0-1.0
 - **Syntax Highlighting**: Full JavaScript highlighting with CodeJar + PrismJS
 - **Drag-Free Reordering**: Simple up/down buttons to organize your scripts
 - **Auto-Save Toggles**: Enable/disable scripts without clicking save
+- **Smart Validation**: Prevents duplicate shortcuts and ensures valid characters
 
 ### 🎨 Beautiful UI
 - Dark theme optimized for readability
 - Keyboard-first navigation (arrows, enter, escape)
 - Shortcut badges displayed as button-like indicators
+- Click-to-execute support for mouse users
 - Click-outside-to-dismiss overlay
 
 ### 🔧 Developer-Friendly
@@ -102,7 +104,7 @@ Chrome Scripts executes JavaScript code directly on webpages, which means:
 2. Click **+ Add** to create a new script
 3. Give it a name and optional shortcut key
 4. Write your JavaScript in the highlighted editor
-5. Toggle it on and press **Save**
+5. Toggle it on and press **Save** (or use `Ctrl+S`)
 
 **Example Script:**
 ```javascript
