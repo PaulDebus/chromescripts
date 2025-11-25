@@ -68,14 +68,14 @@ const WARNING_ICON = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"
 
 function checkUserScriptsAvailability() {
     if (!chrome.userScripts) {
-        console.error('User Scripts API is not available. Please enable it at chrome://flags/#userscripts-api');
+        console.error('User Scripts API is not available. Please enable it in the extension details page at chrome://extensions');
         
         // Show a warning notification to the user
         chrome.notifications.create({
             type: 'basic',
             iconUrl: WARNING_ICON,
             title: 'Chrome Scripts - Configuration Required',
-            message: 'User Scripts API is not enabled. Please enable it at chrome://flags/#userscripts-api and restart Chrome.',
+            message: 'User Scripts are not enabled. Go to chrome://extensions, click Details on this extension, and enable "Allow access to user scripts".',
             priority: 2
         });
         
