@@ -7,6 +7,5 @@ node_modules/
 
 # Temporary files
 *.tmp
-.js
 *.log
 .DS_Store
