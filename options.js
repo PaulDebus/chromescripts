@@ -17,6 +17,8 @@ const enabledInput = document.getElementById('script-enabled');
 const saveBtn = document.getElementById('save-btn');
 const deleteBtn = document.getElementById('delete-btn');
 const addBtn = document.getElementById('add-btn');
+const storageFill = document.getElementById('storage-fill');
+const storageText = document.getElementById('storage-text');
 
 // Initialize CodeJar
 const editorElement = document.getElementById('editor');
@@ -37,11 +39,18 @@ editorElement.addEventListener('keydown', (e) => {
     }
 });
 
+// Storage quota constants
+const QUOTA_BYTES_TOTAL = 102400; // 100 KB total for chrome.storage.sync
+const QUOTA_BYTES_PER_ITEM = 8192; // 8 KB per item
+
 // Load scripts on startup
 chrome.storage.sync.get(['tools'], (result) => {
     if (result.tools) {
         scripts = result.tools;
         renderList();
+        updateStorageUsage();
+    } else {
+        updateStorageUsage();
     }
 });
 
@@ -190,14 +199,31 @@ function addScript() {
 }
 
 function saveScriptsToStorage(callback) {
-    // Quota check
-    const json = JSON.stringify(scripts);
-    const bytes = new Blob([json]).size;
-    const QUOTA_BYTES_PER_ITEM = 8192; // Chrome's limit
+    // Calculate storage size
+    const json = JSON.stringify({ tools: scripts });
+    const totalBytes = new Blob([json]).size;
+    const itemBytes = new Blob([JSON.stringify(scripts)]).size;
 
-    if (bytes > QUOTA_BYTES_PER_ITEM) {
-        alert(`Storage limit exceeded! (${bytes}/${QUOTA_BYTES_PER_ITEM} bytes). Please delete some scripts or reduce their size.`);
+    // Check per-item quota (8 KB)
+    if (itemBytes > QUOTA_BYTES_PER_ITEM) {
+        const kb = (itemBytes / 1024).toFixed(1);
+        const limitKb = (QUOTA_BYTES_PER_ITEM / 1024).toFixed(0);
+        alert(`Per-item storage limit exceeded! (${kb}/${limitKb} KB)\n\nPlease delete some scripts or reduce their size.`);
         return;
+    }
+
+    // Check total quota (100 KB)
+    if (totalBytes > QUOTA_BYTES_TOTAL) {
+        const kb = (totalBytes / 1024).toFixed(1);
+        const limitKb = (QUOTA_BYTES_TOTAL / 1024).toFixed(0);
+        alert(`Total storage limit exceeded! (${kb}/${limitKb} KB)\n\nPlease delete some scripts to free up space.`);
+        return;
+    }
+
+    // Warn if approaching total quota (>80%)
+    const percentage = (totalBytes / QUOTA_BYTES_TOTAL) * 100;
+    if (percentage > 80 && percentage <= 90) {
+        console.warn(`Storage usage is at ${percentage.toFixed(1)}%. Consider removing unused scripts.`);
     }
 
     chrome.storage.sync.set({ tools: scripts }, () => {
@@ -206,6 +232,7 @@ function saveScriptsToStorage(callback) {
             alert("Failed to save changes: " + chrome.runtime.lastError.message);
             return;
         }
+        updateStorageUsage();
         if (callback) callback();
     });
 }
@@ -220,3 +247,25 @@ enabledInput.onchange = function () {
         saveScript();
     }
 };
+
+function updateStorageUsage() {
+    const json = JSON.stringify({ tools: scripts });
+    const bytes = new Blob([json]).size;
+    const percentage = (bytes / QUOTA_BYTES_TOTAL) * 100;
+    const kb = (bytes / 1024).toFixed(1);
+    const totalKb = (QUOTA_BYTES_TOTAL / 1024).toFixed(0);
+
+    // Update progress bar
+    storageFill.style.width = `${Math.min(percentage, 100)}%`;
+
+    // Update color based on usage
+    storageFill.classList.remove('warning', 'danger');
+    if (percentage >= 90) {
+        storageFill.classList.add('danger');
+    } else if (percentage >= 70) {
+        storageFill.classList.add('warning');
+    }
+
+    // Update text
+    storageText.textContent = `${kb} / ${totalKb} KB (${percentage.toFixed(1)}%)`;
+}
