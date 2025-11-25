@@ -63,7 +63,32 @@ const defaultTools = [
     }
 ];
 
+// Simple warning icon for notifications
+const WARNING_ICON = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="128" height="128" fill="%234285F4"/><text x="64" y="90" font-size="80" text-anchor="middle" fill="white">!</text></svg>';
+
+function checkUserScriptsAvailability() {
+    if (!chrome.userScripts) {
+        console.error('User Scripts API is not available. Please enable it in the extension details page at chrome://extensions');
+        
+        // Show a warning notification to the user
+        chrome.notifications.create({
+            type: 'basic',
+            iconUrl: WARNING_ICON,
+            title: 'Chrome Scripts - Configuration Required',
+            message: 'User Scripts are not enabled. Go to chrome://extensions, click Details on this extension, and enable "Allow access to user scripts".',
+            priority: 2
+        });
+        
+        return false;
+    }
+    return true;
+}
+
 async function registerScripts() {
+    if (!checkUserScriptsAvailability()) {
+        return;
+    }
+
     try {
         await chrome.userScripts.unregister();
     } catch (e) {

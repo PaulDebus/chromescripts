@@ -56,6 +56,9 @@ jobs:
             4. Enable **Developer mode**
             5. Click **Load unpacked**
             6. Select the extracted folder
+            7. **Enable User Scripts:**
+               - Click **Details** on the Chrome Scripts extension card
+               - Toggle **Allow access to user scripts** to enabled
             
             ## What's New
             

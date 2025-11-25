@@ -71,6 +71,9 @@ Chrome Scripts executes JavaScript code directly on webpages, which means:
 5. Enable **Developer mode** (top right corner)
 6. Click **Load unpacked**
 7. Select the extracted folder
+8. **Enable User Scripts:**
+   - Click **Details** on the Chrome Scripts extension card
+   - Toggle **Allow access to user scripts** to enabled
 
 **Option 2: Clone from Source**
 
@@ -83,9 +86,13 @@ Chrome Scripts executes JavaScript code directly on webpages, which means:
    - Navigate to `chrome://extensions`
    - Enable **Developer mode**
    - Click **Load unpacked**
-   - Select the `bookmarkmanager` folder
+   - Select the cloned folder
 
-3. Start using:
+3. **Enable User Scripts:**
+   - Click **Details** on the Chrome Scripts extension card
+   - Toggle **Allow access to user scripts** to enabled
+
+4. Start using:
    - Press `Ctrl+Shift+K` (or `Cmd+Shift+K` on Mac)
    - Try the default scripts or create your own!
 
