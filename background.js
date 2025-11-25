@@ -35,32 +35,26 @@ chrome.commands.onCommand.addListener((command, tab) => {
 const defaultTools = [
     {
         id: '1',
-        name: "Highlight Images",
-        code: "document.querySelectorAll('img').forEach(img => img.style.border = '5px solid red');",
-        enabled: true
-    },
-    {
-        id: '2',
-        name: "Show Page Title",
-        code: "alert('Title: ' + document.title);",
-        enabled: true
-    },
-    {
-        id: '3',
         name: "Edit Page Content",
         code: "document.body.contentEditable = 'true'; document.designMode = 'on';",
         enabled: true
     },
     {
-        id: '4',
-        name: "Scroll to Top",
-        code: "window.scrollTo(0,0);",
+        id: '2',
+        name: "Highlight Images",
+        code: "document.querySelectorAll('img').forEach(img => img.style.border = '5px solid red');",
         enabled: true
     },
     {
-        id: '5',
-        name: "Scroll to Bottom",
-        code: "window.scrollTo(0, document.body.scrollHeight);",
+        id: '3',
+        name: "Count All Links",
+        code: "alert('This page has ' + document.links.length + ' links');",
+        enabled: true
+    },
+    {
+        id: '4',
+        name: "Random Background Color",
+        code: "document.body.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);",
         enabled: true
     }
 ];
