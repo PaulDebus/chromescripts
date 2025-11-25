@@ -101,7 +101,7 @@
 
             if (tool.shortcut) {
                 const shortcutSpan = document.createElement('span');
-                shortcutSpan.innerText = tool.shortcut.toUpperCase();
+                shortcutSpan.innerText = tool.shortcut;
                 shortcutSpan.style.cssText = `
                     background-color: ${isSelected ? 'rgba(255,255,255,0.2)' : '#333'};
                     border: 1px solid ${isSelected ? 'rgba(255,255,255,0.3)' : '#555'};
