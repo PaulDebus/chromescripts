@@ -4,7 +4,7 @@
 
 chrome.action.onClicked.addListener((tab) => {
     chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' }).catch((error) => {
-        console.log('Content script not ready, injecting...', error);
+        console.error('Content script not ready, injecting...', error);
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
             files: ['content.js']
@@ -19,7 +19,7 @@ chrome.action.onClicked.addListener((tab) => {
 chrome.commands.onCommand.addListener((command, tab) => {
     if (command === 'toggle-leader') {
         chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'leader' }).catch((error) => {
-            console.log('Content script not ready, injecting...', error);
+            console.error('Content script not ready, injecting...', error);
             chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 files: ['content.js']
