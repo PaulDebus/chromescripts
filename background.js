@@ -120,7 +120,11 @@ async function registerScripts() {
 chrome.runtime.onInstalled.addListener(async () => {
     chrome.storage.sync.get(['tools'], (result) => {
         if (!result.tools) {
-            chrome.storage.sync.set({ tools: defaultTools });
+            chrome.storage.sync.set({ tools: defaultTools }, () => {
+                if (chrome.runtime.lastError) {
+                    console.error("Failed to initialize default tools:", chrome.runtime.lastError);
+                }
+            });
         }
     });
     await registerScripts();

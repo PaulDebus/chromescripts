@@ -99,7 +99,7 @@ function moveScript(id, direction) {
     // Swap
     [scripts[index], scripts[newIndex]] = [scripts[newIndex], scripts[index]];
 
-    chrome.storage.sync.set({ tools: scripts }, () => {
+    saveScriptsToStorage(() => {
         renderList();
     });
 }
@@ -151,7 +151,7 @@ function saveScript() {
         scripts[scriptIndex].code = jar.toString();
         scripts[scriptIndex].enabled = enabledInput.checked;
 
-        chrome.storage.sync.set({ tools: scripts }, () => {
+        saveScriptsToStorage(() => {
             renderList();
             // Show simple feedback
             const originalText = saveBtn.innerText;
@@ -166,7 +166,7 @@ function deleteScript() {
 
     if (confirm('Are you sure you want to delete this script?')) {
         scripts = scripts.filter(s => s.id !== currentScriptId);
-        chrome.storage.sync.set({ tools: scripts }, () => {
+        saveScriptsToStorage(() => {
             currentScriptId = null;
             editorContainer.classList.add('hidden');
             emptyState.classList.remove('hidden');
@@ -184,8 +184,29 @@ function addScript() {
     };
 
     scripts.push(newScript);
-    chrome.storage.sync.set({ tools: scripts }, () => {
+    saveScriptsToStorage(() => {
         selectScript(newScript.id);
+    });
+}
+
+function saveScriptsToStorage(callback) {
+    // Quota check
+    const json = JSON.stringify(scripts);
+    const bytes = new Blob([json]).size;
+    const QUOTA_BYTES_PER_ITEM = 8192; // Chrome's limit
+
+    if (bytes > QUOTA_BYTES_PER_ITEM) {
+        alert(`Storage limit exceeded! (${bytes}/${QUOTA_BYTES_PER_ITEM} bytes). Please delete some scripts or reduce their size.`);
+        return;
+    }
+
+    chrome.storage.sync.set({ tools: scripts }, () => {
+        if (chrome.runtime.lastError) {
+            console.error("Storage error:", chrome.runtime.lastError);
+            alert("Failed to save changes: " + chrome.runtime.lastError.message);
+            return;
+        }
+        if (callback) callback();
     });
 }
 
