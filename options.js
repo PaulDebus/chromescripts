@@ -30,6 +30,13 @@ const highlight = editor => {
 
 jar = CodeJar(editorElement, highlight);
 
+editorElement.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveScript();
+    }
+});
+
 // Load scripts on startup
 chrome.storage.sync.get(['tools'], (result) => {
     if (result.tools) {
