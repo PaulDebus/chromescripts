@@ -135,6 +135,13 @@ function saveScript() {
             alert("Shortcut must be a letter or number.");
             return;
         }
+
+        // Check for duplicate shortcuts
+        const duplicateScript = scripts.find(s => s.shortcut === shortcutValue && s.id !== currentScriptId);
+        if (duplicateScript) {
+            alert(`Shortcut '${shortcutValue}' is already assigned to script "${duplicateScript.name}".`);
+            return;
+        }
     }
 
     const scriptIndex = scripts.findIndex(s => s.id === currentScriptId);

@@ -3,28 +3,30 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 chrome.action.onClicked.addListener((tab) => {
-    chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' }).catch(() => {
+    chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' }).catch((error) => {
+        console.log('Content script not ready, injecting...', error);
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
             files: ['content.js']
         }).then(() => {
-            setTimeout(() => {
-                chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' });
-            }, 100);
+            chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' });
+        }).catch((err) => {
+            console.error('Failed to inject content script:', err);
         });
     });
 });
 
 chrome.commands.onCommand.addListener((command, tab) => {
     if (command === 'toggle-leader') {
-        chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'leader' }).catch(() => {
+        chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'leader' }).catch((error) => {
+            console.log('Content script not ready, injecting...', error);
             chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 files: ['content.js']
             }).then(() => {
-                setTimeout(() => {
-                    chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'leader' });
-                }, 100);
+                chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'leader' });
+            }).catch((err) => {
+                console.error('Failed to inject content script:', err);
             });
         });
     }
@@ -69,7 +71,7 @@ const WARNING_ICON = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"
 function checkUserScriptsAvailability() {
     if (!chrome.userScripts) {
         console.error('User Scripts API is not available. Please enable it in the extension details page at chrome://extensions');
-        
+
         // Show a warning notification to the user
         chrome.notifications.create({
             type: 'basic',
@@ -78,7 +80,7 @@ function checkUserScriptsAvailability() {
             message: 'User Scripts are not enabled. Go to chrome://extensions, click Details on this extension, and enable "Allow access to user scripts".',
             priority: 2
         });
-        
+
         return false;
     }
     return true;
