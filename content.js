@@ -38,22 +38,20 @@
 
     /* Initialize Tools from Storage */
     function loadTools() {
-        chrome.storage.sync.get(['tools'], (result) => {
-            if (result.tools) {
-                tools = result.tools.filter(t => t.enabled).map(t => ({
-                    name: t.name,
-                    shortcut: t.shortcut,
-                    code: t.code,
-                    run: function () {
-                        chrome.runtime.sendMessage({
-                            action: 'executeScript',
-                            code: t.code
-                        });
-                    }
-                }));
-                filteredTools = [...tools];
-                renderList();
-            }
+        ScriptStore.loadAll().then((all) => {
+            tools = all.filter(t => t.enabled).map(t => ({
+                name: t.name,
+                shortcut: t.shortcut,
+                code: t.code,
+                run: function () {
+                    chrome.runtime.sendMessage({
+                        action: 'executeScript',
+                        code: t.code
+                    });
+                }
+            }));
+            filteredTools = [...tools];
+            renderList();
         });
     }
 
@@ -61,7 +59,12 @@
 
     // Listen for storage changes to update tools in real-time
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (namespace === 'sync' && changes.tools) {
+        if (namespace !== 'sync') return;
+        // Reload when any script item or the ordering changes.
+        const touched = Object.keys(changes).some(key =>
+            key === ScriptStore.ORDER_KEY || key.startsWith(ScriptStore.SCRIPT_PREFIX) || key === 'tools'
+        );
+        if (touched) {
             loadTools();
         }
     });

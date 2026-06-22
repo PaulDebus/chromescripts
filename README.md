@@ -149,6 +149,7 @@ bookmarkmanager/
 ├── options.html        # Admin interface structure
 ├── options.js          # Admin interface logic
 ├── options.css         # Admin interface styling
+├── storage.js          # Shared storage layer (one item per script)
 └── vendor/             # Third-party libraries
     ├── codejar.js      # Lightweight code editor
     ├── prism.js        # Syntax highlighting
@@ -158,10 +159,26 @@ bookmarkmanager/
 ### How It Works
 
 1. **Keyboard Shortcut** → `background.js` injects `content.js`
-2. **Content Script** → Loads scripts from `chrome.storage.sync`
+2. **Content Script** → Loads scripts from `chrome.storage.sync` (via `storage.js`)
 3. **User Selection** → Sends script code to `background.js`
 4. **Background Worker** → Executes in Main World via `chrome.scripting.executeScript`
 5. **Storage Changes** → Live updates via `chrome.storage.onChanged` listener
+
+### Storage Model
+
+Each script is stored as its **own item** in `chrome.storage.sync`:
+
+- `script_<id>` → the script object
+- `tool_order` → array of ids defining display order
+
+Because Chrome's 8 KB per-item quota applies per item, **each script gets its
+own 8 KB budget** (not 8 KB shared across all scripts), up to ~512 scripts /
+100 KB total. Legacy data stored under a single `tools` array is migrated
+automatically on first load. The `area` indirection in `storage.js` is the seam
+for a future per-script "sync vs local" hybrid.
+
+> 🗺️ See [docs/storage-roadmap.md](docs/storage-roadmap.md) for the planned
+> per-script sync/local toggle and how to implement it.
 
 ## 🚢 Distribution
 
