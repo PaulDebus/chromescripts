@@ -2,12 +2,14 @@
 //
 // SPDX-License-Identifier: GPL-3.0-only
 
+importScripts('storage.js');
+
 chrome.action.onClicked.addListener((tab) => {
     chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' }).catch((error) => {
         console.error('Content script not ready, injecting...', error);
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            files: ['content.js']
+            files: ['storage.js', 'content.js']
         }).then(() => {
             chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'search' });
         }).catch((err) => {
@@ -22,7 +24,7 @@ chrome.commands.onCommand.addListener((command, tab) => {
             console.error('Content script not ready, injecting...', error);
             chrome.scripting.executeScript({
                 target: { tabId: tab.id },
-                files: ['content.js']
+                files: ['storage.js', 'content.js']
             }).then(() => {
                 chrome.tabs.sendMessage(tab.id, { action: 'open', mode: 'leader' });
             }).catch((err) => {
@@ -112,15 +114,17 @@ async function registerScripts() {
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
-    chrome.storage.sync.get(['tools'], (result) => {
-        if (!result.tools) {
-            chrome.storage.sync.set({ tools: defaultTools }, () => {
-                if (chrome.runtime.lastError) {
-                    console.error("Failed to initialize default tools:", chrome.runtime.lastError);
-                }
-            });
+    try {
+        // Migrates the legacy `tools` array to per-script items if present.
+        const existing = await ScriptStore.loadAll();
+        if (existing.length === 0) {
+            for (const script of defaultTools) {
+                await ScriptStore.saveScript(script);
+            }
         }
-    });
+    } catch (e) {
+        console.error("Failed to initialize default tools:", e);
+    }
     await registerScripts();
 });
 

@@ -39,20 +39,16 @@ editorElement.addEventListener('keydown', (e) => {
     }
 });
 
-// Storage quota constants
-const QUOTA_BYTES_TOTAL = 102400; // 100 KB total for chrome.storage.sync
-const QUOTA_BYTES_PER_ITEM = 8192; // 8 KB per item
+// Storage quota constants (provided by storage.js / ScriptStore)
+const QUOTA_BYTES_TOTAL = ScriptStore.QUOTA_BYTES_TOTAL; // 100 KB total for chrome.storage.sync
+const QUOTA_BYTES_PER_ITEM = ScriptStore.QUOTA_BYTES_PER_ITEM; // 8 KB per item (now per individual script)
 
 // Load scripts on startup
-chrome.storage.sync.get(['tools'], (result) => {
-    if (result.tools) {
-        scripts = result.tools;
-        renderList();
-        updateStorageUsage();
-    } else {
-        updateStorageUsage();
-    }
-});
+ScriptStore.loadAll().then((all) => {
+    scripts = all;
+    renderList();
+    updateStorageUsage();
+}).catch(handleStorageError);
 
 function renderList() {
     scriptList.innerHTML = '';
@@ -108,9 +104,10 @@ function moveScript(id, direction) {
     // Swap
     [scripts[index], scripts[newIndex]] = [scripts[newIndex], scripts[index]];
 
-    saveScriptsToStorage(() => {
+    ScriptStore.saveOrder(scripts.map(s => s.id)).then(() => {
         renderList();
-    });
+        updateStorageUsage();
+    }).catch(handleStorageError);
 }
 
 function selectScript(id) {
@@ -160,13 +157,25 @@ function saveScript() {
         scripts[scriptIndex].code = jar.toString();
         scripts[scriptIndex].enabled = enabledInput.checked;
 
-        saveScriptsToStorage(() => {
+        const script = scripts[scriptIndex];
+
+        // Per-item quota now applies to a single script (8 KB each).
+        const bytes = ScriptStore.itemBytes(script);
+        if (bytes > QUOTA_BYTES_PER_ITEM) {
+            const kb = (bytes / 1024).toFixed(1);
+            const limitKb = (QUOTA_BYTES_PER_ITEM / 1024).toFixed(0);
+            alert(`This script is too large! (${kb}/${limitKb} KB)\n\nEach script must stay under ${limitKb} KB. Please shorten it.`);
+            return;
+        }
+
+        ScriptStore.saveScript(script).then(() => {
             renderList();
+            updateStorageUsage();
             // Show simple feedback
             const originalText = saveBtn.innerText;
             saveBtn.innerText = 'Saved!';
             setTimeout(() => saveBtn.innerText = originalText, 1000);
-        });
+        }).catch(handleStorageError);
     }
 }
 
@@ -174,13 +183,15 @@ function deleteScript() {
     if (!currentScriptId) return;
 
     if (confirm('Are you sure you want to delete this script?')) {
-        scripts = scripts.filter(s => s.id !== currentScriptId);
-        saveScriptsToStorage(() => {
+        const idToDelete = currentScriptId;
+        scripts = scripts.filter(s => s.id !== idToDelete);
+        ScriptStore.deleteScript(idToDelete).then(() => {
             currentScriptId = null;
             editorContainer.classList.add('hidden');
             emptyState.classList.remove('hidden');
             renderList();
-        });
+            updateStorageUsage();
+        }).catch(handleStorageError);
     }
 }
 
@@ -193,48 +204,16 @@ function addScript() {
     };
 
     scripts.push(newScript);
-    saveScriptsToStorage(() => {
+    ScriptStore.saveScript(newScript).then(() => {
         selectScript(newScript.id);
-    });
+        updateStorageUsage();
+    }).catch(handleStorageError);
 }
 
-function saveScriptsToStorage(callback) {
-    // Calculate storage size
-    const json = JSON.stringify({ tools: scripts });
-    const totalBytes = new Blob([json]).size;
-    const itemBytes = new Blob([JSON.stringify(scripts)]).size;
-
-    // Check per-item quota (8 KB)
-    if (itemBytes > QUOTA_BYTES_PER_ITEM) {
-        const kb = (itemBytes / 1024).toFixed(1);
-        const limitKb = (QUOTA_BYTES_PER_ITEM / 1024).toFixed(0);
-        alert(`Per-item storage limit exceeded! (${kb}/${limitKb} KB)\n\nPlease delete some scripts or reduce their size.`);
-        return;
-    }
-
-    // Check total quota (100 KB)
-    if (totalBytes > QUOTA_BYTES_TOTAL) {
-        const kb = (totalBytes / 1024).toFixed(1);
-        const limitKb = (QUOTA_BYTES_TOTAL / 1024).toFixed(0);
-        alert(`Total storage limit exceeded! (${kb}/${limitKb} KB)\n\nPlease delete some scripts to free up space.`);
-        return;
-    }
-
-    // Warn if approaching total quota (>80%)
-    const percentage = (totalBytes / QUOTA_BYTES_TOTAL) * 100;
-    if (percentage > 80 && percentage <= 90) {
-        console.warn(`Storage usage is at ${percentage.toFixed(1)}%. Consider removing unused scripts.`);
-    }
-
-    chrome.storage.sync.set({ tools: scripts }, () => {
-        if (chrome.runtime.lastError) {
-            console.error("Storage error:", chrome.runtime.lastError);
-            alert("Failed to save changes: " + chrome.runtime.lastError.message);
-            return;
-        }
-        updateStorageUsage();
-        if (callback) callback();
-    });
+function handleStorageError(error) {
+    console.error("Storage error:", error);
+    const message = (error && error.message) ? error.message : String(error);
+    alert("Failed to save changes: " + message + "\n\nYou may have hit the total storage limit. Try deleting some scripts.");
 }
 
 saveBtn.onclick = saveScript;
@@ -249,23 +228,23 @@ enabledInput.onchange = function () {
 };
 
 function updateStorageUsage() {
-    const json = JSON.stringify({ tools: scripts });
-    const bytes = new Blob([json]).size;
-    const percentage = (bytes / QUOTA_BYTES_TOTAL) * 100;
-    const kb = (bytes / 1024).toFixed(1);
-    const totalKb = (QUOTA_BYTES_TOTAL / 1024).toFixed(0);
+    ScriptStore.getBytesInUse().then((bytes) => {
+        const percentage = (bytes / QUOTA_BYTES_TOTAL) * 100;
+        const kb = (bytes / 1024).toFixed(1);
+        const totalKb = (QUOTA_BYTES_TOTAL / 1024).toFixed(0);
 
-    // Update progress bar
-    storageFill.style.width = `${Math.min(percentage, 100)}%`;
+        // Update progress bar
+        storageFill.style.width = `${Math.min(percentage, 100)}%`;
 
-    // Update color based on usage
-    storageFill.classList.remove('warning', 'danger');
-    if (percentage >= 90) {
-        storageFill.classList.add('danger');
-    } else if (percentage >= 70) {
-        storageFill.classList.add('warning');
-    }
+        // Update color based on usage
+        storageFill.classList.remove('warning', 'danger');
+        if (percentage >= 90) {
+            storageFill.classList.add('danger');
+        } else if (percentage >= 70) {
+            storageFill.classList.add('warning');
+        }
 
-    // Update text
-    storageText.textContent = `${kb} / ${totalKb} KB (${percentage.toFixed(1)}%)`;
+        // Update text
+        storageText.textContent = `${kb} / ${totalKb} KB (${percentage.toFixed(1)}%)`;
+    }).catch(handleStorageError);
 }
