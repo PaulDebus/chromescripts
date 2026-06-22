@@ -48,7 +48,7 @@ ScriptStore.loadAll().then((all) => {
     scripts = all;
     renderList();
     updateStorageUsage();
-});
+}).catch(handleStorageError);
 
 function renderList() {
     scriptList.innerHTML = '';
@@ -246,5 +246,5 @@ function updateStorageUsage() {
 
         // Update text
         storageText.textContent = `${kb} / ${totalKb} KB (${percentage.toFixed(1)}%)`;
-    });
+    }).catch(handleStorageError);
 }

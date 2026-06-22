@@ -52,7 +52,7 @@
             }));
             filteredTools = [...tools];
             renderList();
-        });
+        }).catch((e) => console.error('Failed to load scripts:', e));
     }
 
     loadTools();
